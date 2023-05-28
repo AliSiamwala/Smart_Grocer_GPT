@@ -25,23 +25,44 @@ print("Eating the database...")
 
 
 
+# @app.route("/", methods=("GET", "POST"))
+# def index():
+#     result = None
+#     if request.method == "POST":
+#         animal = request.form["animal"]
+#         response = openai.Completion.create(
+#             model="text-davinci-003",
+#             prompt=generate_prompt(animal),
+#             temperature=1,
+#             max_tokens=150
+#         )
+#         print(response)
+#         session['result'] = response.choices[0].text.strip() # store result in session
+#         return redirect(url_for("index"))
+
+#     result = session.get('result') # retrieve result from session
+#     return render_template("index.html", result=result)
+
 @app.route("/", methods=("GET", "POST"))
 def index():
     result = None
     if request.method == "POST":
         animal = request.form["animal"]
-        response = openai.Completion.create(
-            model="text-davinci-003",
+        response = openai.ChatCompletion.create(
+            model="gpt-3.5-turbo",
             prompt=generate_prompt(animal),
             temperature=0.2,
             max_tokens=150
         )
         print(response)
-        session['result'] = response.choices[0].text.strip() # store result in session
+        session['result'] = response.choices[0].message.content # store result in session
         return redirect(url_for("index"))
 
     result = session.get('result') # retrieve result from session
     return render_template("index.html", result=result)
+
+
+
 
 def generate_prompt(animal):
     return """
@@ -145,6 +166,8 @@ def generate_prompt(animal):
     "Bread, from white wheat flour and banana, sliced, toasted, commercial, composite",1430
     "Muffin split, English style, from white wheat flour, plain, as purchased, commercial, composite",908
 
+    
+    ### Instructions ###
     1) Parse the food data above. Each line contains a food item and its caloric value per 100 grams. 
     2) The user will input their caloric requirements. This will be the target value that you aim to reach with the meal plan
     3) Select foods: Randomnly select a number of foods (between 3 and 5) from the list. Calculate the total caloric value for 100 grams of each selected food.
@@ -155,12 +178,12 @@ def generate_prompt(animal):
     6) Output: For each selected food, output its name, serving size in grams, and caloric content for the serving size that you have specified. Also provide the total caloric intake.
 
     Respond in the following way:
-    Food 1: (First word of the food), (grams of food), (total calories in the food)   
-    Food 2: (First word of the food), (grams of food), (total calories in the food)
-    Food 3: (First word of the food), (grams of food), (total calories in the food)
-    Food 4: (First word of the food), (grams of food), (total calories in the food)
-    Food 5: (First word of the food), (grams of food), (total calories in the food)
-    Total calories: (total calories in the meal plan)
+    Food 1: (First word of the food), (grams of food)g, (total calories in the food)kcal   
+    Food 2: (First word of the food), (grams of food)g, (total calories in the food)kcal
+    Food 3: (First word of the food), (grams of food)g, (total calories in the food)kcal
+    Food 4: (First word of the food), (grams of food)g, (total calories in the food)kcal
+    Food 5: (First word of the food), (grams of food)g, (total calories in the food)kcal
+    Total calories: (total calories in the meal plan)kcal
 
     If the total calories are not within the target range, adjust the food selection or quantities and repeat the process.
 
