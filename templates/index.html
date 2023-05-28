@@ -3,7 +3,7 @@
   <title>OpenAI Quickstart</title>
   <link
     rel="shortcut icon"
-    href="{{ url_for('static', filename='goggins_lift.png') }}"
+    href="{{ url_for('static', filename='heart-shape-various-vegetables-fruits-healthy-food-concept-isolated-white-background-140287808.jpg') }}"
   />
   <link rel="stylesheet" href="{{ url_for('static', filename='main.css') }}" />
   <style>
@@ -15,11 +15,11 @@
 </head>
 
 <body>
-  <img src="{{ url_for('static', filename='goggins_lift.png') }}" class="icon goggins-img" />
-  <h3>Goggins Wisdom</h3>
+  <img src="{{ url_for('static', filename='heart-shape-various-vegetables-fruits-healthy-food-concept-isolated-white-background-140287808.jpg') }}" class="icon goggins-img" />
+  <h3>Smart Grocer</h3>
   <form action="/" method="post">
-    <input type="text" name="animal" placeholder="How can Goggins help you today?" required />
-    <input type="submit" value="Generate Goggins Wisdom" />
+    <input type="text" name="animal" placeholder="Number of Calories per day?" required />
+    <input type="submit" value="Generate meal plan" />
   </form>
   {% if result %}
   <div class="result">{{ result }}</div>
